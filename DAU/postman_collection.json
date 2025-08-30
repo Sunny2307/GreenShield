@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "mangrove-watch-api-collection",
+		"name": "Community Mangrove Watch API",
+		"description": "Complete API collection for testing the Community Mangrove Watch ML/DL pipeline",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic Connectivity",
+			"item": [
+				{
+					"name": "GET - Root Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						},
+						"description": "Test basic API connectivity and get API information"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check API health and component status"
+					},
+					"response": []
+				},
+				{
+					"name": "POST - Test Connection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/test-connection",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"test-connection"
+							]
+						},
+						"description": "Test API connectivity and pipeline readiness"
+					},
+					"response": []
+				}
+			],
+			"description": "Basic connectivity and health check endpoints"
+		},
+		{
+			"name": "Main API - Report Validation",
+			"item": [
+				{
+					"name": "POST - Validate Report (With Photo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"photo_url\": \"https://example.com/mangrove_photo.jpg\",\n  \"latitude\": 12.345678,\n  \"longitude\": 78.901234,\n  \"timestamp\": \"2024-01-15T10:30:00Z\",\n  \"description\": \"Suspicious mangrove cutting activity detected. Large trees have been removed and there are signs of recent heavy machinery activity.\",\n  \"reporter_id\": \"citizen_001\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/validate-report",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"validate-report"
+							]
+						},
+						"description": "Submit a citizen report with photo for AI validation"
+					},
+					"response": []
+				},
+				{
+					"name": "POST - Validate Report (No Photo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"latitude\": 12.345678,\n  \"longitude\": 78.901234,\n  \"timestamp\": \"2024-01-15T10:30:00Z\",\n  \"description\": \"Report without photo - heard chainsaw sounds from mangrove area\",\n  \"reporter_id\": \"citizen_002\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/validate-report",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"validate-report"
+							]
+						},
+						"description": "Submit a citizen report without photo for validation"
+					},
+					"response": []
+				}
+			],
+			"description": "Main API endpoints for processing citizen reports"
+		},
+		{
+			"name": "Error Handling Tests",
+			"item": [
+				{
+					"name": "POST - Invalid Coordinates",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"photo_url\": \"https://example.com/photo.jpg\",\n  \"latitude\": 100.0,\n  \"longitude\": 78.901234,\n  \"timestamp\": \"2024-01-15T10:30:00Z\",\n  \"description\": \"Test report with invalid coordinates\",\n  \"reporter_id\": \"test_user\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/validate-report",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"validate-report"
+							]
+						},
+						"description": "Test error handling for invalid coordinates"
+					},
+					"response": []
+				},
+				{
+					"name": "POST - Missing Required Fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"latitude\": 12.345678,\n  \"longitude\": 78.901234\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/validate-report",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"validate-report"
+							]
+						},
+						"description": "Test error handling for missing required fields"
+					},
+					"response": []
+				}
+			],
+			"description": "Test error handling and validation"
+		},
+		{
+			"name": "Monitoring & Statistics",
+			"item": [
+				{
+					"name": "GET - Pipeline Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"status"
+							]
+						},
+						"description": "Get detailed pipeline status and component health"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Processing Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/statistics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"statistics"
+							]
+						},
+						"description": "Get processing statistics and metrics"
+					},
+					"response": []
+				}
+			],
+			"description": "Monitoring and statistics endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}
